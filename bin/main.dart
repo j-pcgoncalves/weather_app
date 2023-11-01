@@ -8,6 +8,6 @@ void main(List<String> arguments) async {
 
   final city = arguments.first;
   final api = WeatherApiClient();
-  final locationWeather = await api.getLocationInfo(city);
+  final locationWeather = await api.fetchWeather(city);
   print(locationWeather);
 }

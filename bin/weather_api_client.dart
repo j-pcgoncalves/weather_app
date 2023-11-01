@@ -3,13 +3,14 @@ import "dart:convert";
 import "package:http/http.dart" as http;
 
 import "secret_config.dart";
+import "weather.dart";
 
 class WeatherApiClient {
   SecretConfig _API_SECRET = SecretConfig();
   static const baseUrl =
       "https://weather-by-api-ninjas.p.rapidapi.com/v1/weather";
 
-  Future<Map<String, dynamic>> getLocationInfo(String city) async {
+  Future<Weather> fetchWeather(String city) async {
     final locationUrl = Uri.parse("$baseUrl?city=$city");
     final locationResponse = await http.get(
       locationUrl,
@@ -20,10 +21,10 @@ class WeatherApiClient {
     );
 
     if (locationResponse.statusCode != 200) {
-      throw Exception("Error getting locationId for city: $city");
+      throw Exception("Error getting weather for city: $city");
     }
 
     final locationJson = jsonDecode(locationResponse.body);
-    return locationJson;
+    return Weather.fromJson(locationJson);
   }
 }

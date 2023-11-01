@@ -5,6 +5,12 @@ import "package:http/http.dart" as http;
 import "secret_config.dart";
 import "weather.dart";
 
+class WeatherApiException implements Exception {
+  WeatherApiException(this.message);
+
+  final String message;
+}
+
 class WeatherApiClient {
   SecretConfig _API_SECRET = SecretConfig();
   static const baseUrl =
@@ -21,7 +27,7 @@ class WeatherApiClient {
     );
 
     if (locationResponse.statusCode != 200) {
-      throw Exception("Error getting weather for city: $city");
+      throw WeatherApiException("Error getting weather for city: $city");
     }
 
     final locationJson = jsonDecode(locationResponse.body);
